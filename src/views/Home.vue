@@ -1,23 +1,30 @@
 <template>
     <div class="row">
         <span v-if="movies.length == 0" class="loading">Loading Content...</span>
-        <router-link :to="{
-            name: 'detail-movie',
-            params: {
-                slug: movie.slug
-            }
-        }" class="col-md-2 col-6 mb-3 d-flex justify-content-center movie-container"
-            v-for="(movie, index) in movies" :key="index">
+        <div class="col-md-2 col-6 mb-3 d-flex justify-content-center movie-container" v-for="(movie, index) in movies"
+            :key="index">
             <div class="card movie-card" :style="{ backgroundImage: 'url(' + movie.thumbnail_url + ')' }">
                 <div class="card-body">
                     <div class="d-flex justify-content-between movie-header">
                         <span class="movie-duration">{{ movie.duration == "" ? movie.episode : movie.duration }}</span>
                         <span class="movie-quality">{{ movie.quality }}</span>
                     </div>
-                    <p class="text-title">{{ movie.title }}</p>
+                    <router-link :to="{
+                        name: 'detail-movie',
+                        params: {
+                            slug: movie.slug
+                        }
+                    }" class="text-title" v-if="movie.quality !== 'TV Show'">{{ movie.title }}</router-link>
+
+                    <router-link :to="{
+                        name: 'detail-tv',
+                        params: {
+                            slug: movie.slug
+                        }
+                    }" class="text-title" v-else>{{ movie.title }}</router-link>
                 </div>
             </div>
-        </router-link>
+        </div>
     </div>
 
     <div class="d-flex justify-content-center pt-4" v-if="max_pagination != 0">
@@ -90,6 +97,8 @@ export default defineComponent({
     bottom: 0;
     background-color: rgb(0 0 0 / 50%);
     width: 100%;
+    text-decoration: none;
+    color: #fff;
 }
 
 .movie-header {

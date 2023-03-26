@@ -12,6 +12,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("./views/DetailMovie.vue"),
   },
   {
+    name: 'detail-tv',
+    path: "/tv/:slug",
+    component: () => import("./views/DetailTV.vue"),
+  },
+  {
+    name: 'stream-tv-eps',
+    path: "/tv/eps/:slug",
+    component: () => import("./views/DetailTVStream.vue"),
+  },
+  {
     path: "/about",
     component: () => import("./views/About.vue"),
   }
