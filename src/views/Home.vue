@@ -1,15 +1,116 @@
 <template>
-    <h1>{{ msg }}</h1>
+    <div class="row">
+        <span v-if="movies.length == 0" class="loading">Loading Content...</span>
+        <router-link to="/" class="col-md-2 col-6 mb-3 d-flex justify-content-center movie-container"
+            v-for="(movie, index) in movies" :key="index">
+            <div class="card movie-card" :style="{ backgroundImage: 'url(' + movie.thumbnail_url + ')' }">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between movie-header">
+                        <span class="movie-duration">{{ movie.duration == "" ? movie.episode : movie.duration }}</span>
+                        <span class="movie-quality">{{ movie.quality }}</span>
+                    </div>
+                    <p class="text-title">{{ movie.title }}</p>
+                </div>
+            </div>
+        </router-link>
+    </div>
+
+    <div class="d-flex justify-content-center pt-4" v-if="max_pagination != 0">
+        <vue-awesome-paginate v-model="current_page" :on-click="changePage" />
+    </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import axios from "axios";
 
 export default defineComponent({
     name: "Home",
-    setup() {
-        const msg = "Welcome to Your Vue.js + TypeScript App";
-        return { msg };
+    data() {
+        return {
+            current_page: 1,
+            max_pagination: 10,
+            movies: [] as any[]
+        }
     },
+    methods: {
+        async changePage(page: number) {
+            await axios.get(import.meta.env.VITE_API_URL + "/movies/" + page)
+                .then(({ data }) => {
+                    // this.max_pagination = data.data.total_page
+                    this.movies = data.data.movies
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+    },
+    async mounted() {
+        await axios.get(import.meta.env.VITE_API_URL + "/movies")
+            .then(({ data }) => {
+                // this.max_pagination = data.data.total_page
+                this.movies = data.data.movies
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
 })
 </script>
+
+<style scoped>
+.loading {
+    text-align: center;
+    font-weight: 600;
+}
+
+.movie-card {
+    width: 150px;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.movie-card .card-body {
+    position: relative;
+    color: #fff;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.card-body {
+    padding: 0;
+}
+
+.card-body .text-title {
+    font-size: .75em;
+    font-weight: 700;
+    position: absolute;
+    bottom: 0;
+    background-color: rgb(0 0 0 / 50%);
+    width: 100%;
+}
+
+.movie-header {
+    font-size: .7em;
+    font-weight: 600;
+    width: 100%;
+    height: max-content;
+}
+
+.movie-header span {
+    padding: 0 7px;
+    overflow: hidden;
+}
+
+.movie-header span.movie-duration {
+    border-top-left-radius: 5px;
+    background-color: #1e8239;
+}
+
+.movie-header span.movie-quality {
+    border-top-right-radius: 5px;
+    background-color: #121d6f;
+}
+</style>

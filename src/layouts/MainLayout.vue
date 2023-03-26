@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <Navbar />
-        <div class="py-5">
+        <div class="pt-3 pb-4">
             <slot />
         </div>
         <Footer />
