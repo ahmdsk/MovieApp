@@ -32,3 +32,8 @@
 .active-page:hover {
   background-color: #2988c8;
 }
+
+.loading {
+  text-align: center;
+  font-weight: 600;
+}

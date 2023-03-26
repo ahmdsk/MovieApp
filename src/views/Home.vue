@@ -1,7 +1,12 @@
 <template>
     <div class="row">
         <span v-if="movies.length == 0" class="loading">Loading Content...</span>
-        <router-link to="/" class="col-md-2 col-6 mb-3 d-flex justify-content-center movie-container"
+        <router-link :to="{
+            name: 'detail-movie',
+            params: {
+                slug: movie.slug
+            }
+        }" class="col-md-2 col-6 mb-3 d-flex justify-content-center movie-container"
             v-for="(movie, index) in movies" :key="index">
             <div class="card movie-card" :style="{ backgroundImage: 'url(' + movie.thumbnail_url + ')' }">
                 <div class="card-body">
@@ -59,11 +64,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.loading {
-    text-align: center;
-    font-weight: 600;
-}
-
 .movie-card {
     width: 150px;
     height: 200px;
