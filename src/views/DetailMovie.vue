@@ -110,7 +110,6 @@ export default defineComponent({
     async mounted() {
         await axios.get(import.meta.env.VITE_API_URL + "/movies/detail/" + this.$route.params.slug)
             .then(({ data }) => {
-                console.log(data.data)
                 this.movie = data.data
             })
             .catch((error) => {
