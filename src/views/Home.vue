@@ -14,7 +14,7 @@
                         params: {
                             slug: movie.slug
                         }
-                    }" class="text-title" v-if="movie.quality !== 'TV Show'">{{ movie.title }}</router-link>
+                    }" class="text-title py-2" v-if="movie.quality !== 'TV Show'">{{ movie.title }}</router-link>
 
                     <router-link :to="{
                         name: 'detail-tv',
@@ -47,7 +47,12 @@ export default defineComponent({
     },
     methods: {
         async changePage(page: number) {
-            await axios.get(import.meta.env.VITE_API_URL + "/movies/" + page)
+            await axios.get(import.meta.env.VITE_API_URL + "/movies/" + page, {
+                headers: {
+                    'Referer': 'https://ngefilm21.shop/',
+                    'Referrer-Policy': 'no-referrer'
+                }
+            })
                 .then(({ data }) => {
                     // this.max_pagination = data.data.total_page
                     this.movies = data.data.movies

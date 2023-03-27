@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MovieApp</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MovieApp</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+
+  <script>
+    Object.defineProperty(document, "referrer", {
+      get: function () {
+        return "https://ngefilm.21.shop/";
+      },
+    });
+
+    let headers = new Headers()
+    headers.set('Referer', 'https://ngefilm.21.shop/')
+    headers.set('Referrer-Policy', 'no-referrer')
+  </script>
+</body>
+
 </html>

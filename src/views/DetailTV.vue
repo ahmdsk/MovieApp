@@ -57,7 +57,7 @@
                             params: {
                                 slug: stream.slug
                             }
-                        }" class="btn btn-primary me-3" v-for="(stream, index) in movie.streaming_links" :key="index">
+                        }" class="btn btn-primary me-2 mb-1" v-for="(stream, index) in movie.streaming_links" :key="index">
                             Eps {{ index + 1 }}
                         </router-link>
                     </div>
@@ -81,11 +81,17 @@ export default defineComponent({
     methods: {
         changeStream(stream: string) {
             const iframe = document.querySelector('iframe') as HTMLIFrameElement
+            iframe.referrerPolicy = 'no-referrer'
             iframe.src = stream
         }
     },
     async mounted() {
-        await axios.get(import.meta.env.VITE_API_URL + "/tv/" + this.$route.params.slug)
+        await axios.get(import.meta.env.VITE_API_URL + "/tv/" + this.$route.params.slug, {
+                headers: {
+                    'Referer': 'https://ngefilm21.shop/',
+                    'Referrer-Policy': 'no-referrer'
+                }
+            })
             .then(({ data }) => {
                 this.movie = data.data
             })
