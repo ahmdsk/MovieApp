@@ -73,7 +73,7 @@ export default defineComponent({
     async mounted() {
         await axios.get(import.meta.env.VITE_API_URL + "/movies/detail/" + this.$route.params.slug, {
                 headers: {
-                    'Referer': 'https://ngefilm21.shop/',
+                    'Referer': 'https://ngefilm21.club/',
                     'Referrer-Policy': 'no-referrer'
                 }
             })
@@ -86,7 +86,7 @@ export default defineComponent({
 
         await axios.get(import.meta.env.VITE_API_URL + "/tv/" + this.$route.params.slug, {
                 headers: {
-                    'Referer': 'https://ngefilm21.shop/',
+                    'Referer': 'https://ngefilm21.club/',
                     'Referrer-Policy': 'no-referrer'
                 }
             })

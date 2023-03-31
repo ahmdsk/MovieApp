@@ -76,7 +76,7 @@ export default defineComponent({
 
             await axios.get(`${import.meta.env.VITE_API_URL}/search?s=${this.searchParams}&page=${page}`, {
                 headers: {
-                    'Referer': 'https://ngefilm21.club/',
+                    'Referer': 'https://ngefilm21.shop/',
                     'Referrer-Policy': 'no-referrer'
                 }
             })
