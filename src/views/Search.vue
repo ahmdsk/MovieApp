@@ -1,4 +1,7 @@
 <template>
+    <div class="ps-4 pb-3">
+        <h4>Search Movie: {{ searchParams }}</h4>
+    </div>
     <div class="row">
         <div class="d-flex flex-column justify-content-center align-items-center" v-if="isloading">
             <div class="spinner-border" role="status" aria-hidden="true"></div>
@@ -29,9 +32,8 @@
             </div>
         </div>
     </div>
-
-    <div class="d-flex justify-content-center pt-4" v-if="max_pagination != 0">
-        <vue-awesome-paginate v-model="current_page" :on-click="changePage" />
+    <div class="d-flex justify-content-center pt-4" v-if="max_pagination != 0 && max_pagination != null">
+        <vue-awesome-paginate v-model="current_page" :on-click="changePage" :total-items="19 * (max_pagination / 2)" />
     </div>
 </template>
 
@@ -40,22 +42,41 @@ import { defineComponent } from "vue";
 import axios from "axios";
 
 export default defineComponent({
-    name: "Home",
+    name: "Search",
     data() {
         return {
             current_page: 1,
-            max_pagination: 10,
+            max_pagination: 0,
             movies: [] as any[],
-            isloading: true
+            isloading: true,
+            searchParams: ""
+        }
+    },
+    watch: {
+        '$route.query': {
+            async handler(newValue) {
+                this.isloading = true
+                this.searchParams = newValue.s
+                await axios.get(import.meta.env.VITE_API_URL + "/search?s=" + newValue.s)
+                    .then(({ data }) => {
+                        this.max_pagination = data.data.total_page
+                        this.movies = data.data.movies
+                        this.isloading = false
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            },
+            immediate: true
         }
     },
     methods: {
         async changePage(page: number) {
             this.isloading = true
 
-            await axios.get(import.meta.env.VITE_API_URL + "/movies/" + page, {
+            await axios.get(`${import.meta.env.VITE_API_URL}/search?s=${this.searchParams}&page=${page}`, {
                 headers: {
-                    'Referer': 'https://ngefilm21.shop/',
+                    'Referer': 'https://ngefilm21.club/',
                     'Referrer-Policy': 'no-referrer'
                 }
             })
@@ -67,17 +88,6 @@ export default defineComponent({
                     console.log(error)
                 })
         }
-    },
-    async mounted() {
-        await axios.get(import.meta.env.VITE_API_URL + "/movies")
-            .then(({ data }) => {
-                // this.max_pagination = data.data.total_page
-                this.movies = data.data.movies
-                this.isloading = false
-            })
-            .catch((error) => {
-                console.log(error)
-            })
     }
 })
 </script>

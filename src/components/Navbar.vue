@@ -16,17 +16,14 @@
               Category
             </a>
             <ul class="dropdown-menu">
-              <li><router-link class="dropdown-item" to="/about">Horror</router-link></li>
-              <li><a class="dropdown-item" href="#">Sci-Fi</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Coming Soon</a></li>
+              <li v-for="({ title, slug }, index) in category" :key="index"><router-link class="dropdown-item"
+                  :to="slug">{{ title }}</router-link></li>
             </ul>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search Movie..." aria-label="Search">
+        <form class="d-flex" role="search" @submit.prevent="searchMovie">
+          <input class="form-control me-2" type="search" placeholder="Search Movie..." aria-label="Search"
+            v-model="searchParams">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
       </div>
@@ -35,9 +32,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import axios from "axios";
+import { defineComponent, onMounted, ref } from "vue";
+import router from "../router";
 
 export default defineComponent({
-    name: "Navbar",
+  name: "Navbar",
+  setup() {
+    const category = ref();
+    const searchParams = ref("");
+
+    onMounted(async () => {
+      await axios(import.meta.env.VITE_API_URL + "/category")
+        .then(({ data }) => {
+          category.value = data.data
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    })
+
+    function searchMovie() {
+      router.push({ 
+        name: "search", 
+        query: { 
+          s: searchParams.value 
+        } 
+      })
+    }
+
+    return {
+      category,
+      searchParams,
+      searchMovie
+    }
+  }
 })
 </script>

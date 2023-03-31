@@ -22,6 +22,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("./views/DetailTVStream.vue"),
   },
   {
+    name: 'search',
+    path: "/search",
+    component: () => import("./views/Search.vue"),
+  },
+  {
     path: "/about",
     component: () => import("./views/About.vue"),
   }
