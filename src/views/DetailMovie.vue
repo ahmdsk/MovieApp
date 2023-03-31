@@ -1,7 +1,8 @@
 <template>
     <div class="container">
-        <div v-if="Object.keys(movie).length == 0" class="d-flex justify-content-center">
-            <span class="loading">Loading Content...</span>
+        <div class="d-flex flex-column justify-content-center align-items-center" v-if="Object.keys(movie).length == 0">
+            <div class="spinner-border" role="status" aria-hidden="true"></div>
+            <span class="pt-2">Fetching Your Favorite Movie...</span>
         </div>
         <div class="row justify-content-center" v-else>
             <div class="col-12 col-md-8">
