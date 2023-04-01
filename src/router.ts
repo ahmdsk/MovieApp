@@ -27,6 +27,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("./views/Search.vue"),
   },
   {
+    name: 'category',
+    path: "/category/:slug",
+    component: () => import("./views/MovieCategory.vue"),
+  },
+  {
     path: "/about",
     component: () => import("./views/About.vue"),
   }

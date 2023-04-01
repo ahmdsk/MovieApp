@@ -17,7 +17,12 @@
             </a>
             <ul class="dropdown-menu">
               <li v-for="({ title, slug }, index) in category" :key="index"><router-link class="dropdown-item"
-                  :to="slug">{{ title }}</router-link></li>
+                  :to="{
+                    name: 'category',
+                    params: {
+                      slug
+                    }
+                  }">{{ title }}</router-link></li>
             </ul>
           </li>
         </ul>
