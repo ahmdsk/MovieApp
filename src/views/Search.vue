@@ -40,6 +40,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
+import router from "../router";
 
 export default defineComponent({
     name: "Search",
@@ -64,6 +65,16 @@ export default defineComponent({
                         this.isloading = false
                     })
                     .catch((error) => {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: error.response.data.message,
+                            confirmButtonText: 'Kembali',
+                        }).then((result: any) => {
+                            if (result.isConfirmed) {
+                                router.push({ name: 'home' })
+                            }
+                        })
                         console.log(error)
                     })
             },

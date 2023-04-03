@@ -17,14 +17,14 @@
                     </div>
                     <router-link :to="{
                         name: 'detail-movie',
-                        params: {
+                            params: {
                             slug: movie.slug
                         }
                     }" class="text-title py-2" v-if="movie.quality !== 'TV Show'">{{ movie.title }}</router-link>
 
                     <router-link :to="{
                         name: 'detail-tv',
-                        params: {
+                            params: {
                             slug: movie.slug
                         }
                     }" class="text-title" v-else>{{ movie.title }}</router-link>
@@ -40,6 +40,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
+import router from "../router";
 
 export default defineComponent({
     name: "Search",
@@ -63,7 +64,17 @@ export default defineComponent({
                         this.movies = data.data.movies
                         this.isloading = false
                     })
-                    .catch((error) => {
+                    .catch((error: any) => {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: error.response.data.message,
+                            confirmButtonText: 'Kembali',
+                        }).then((result: any) => {
+                            if (result.isConfirmed) {
+                                router.push({ name: 'home' })
+                            }
+                        })
                         console.log(error)
                     })
             },

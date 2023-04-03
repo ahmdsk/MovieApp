@@ -6,7 +6,8 @@
         <div class="row justify-content-center" v-else>
             <div class="col-12 col-md-8">
                 <div class="embed-responsive">
-                    <iframe :src="movie.streaming_links[0]" scrolling="0" allowfullscreen="true" frameborder="0" referrerpolicy="no-referrer"></iframe>
+                    <iframe :src="movie.streaming_links[0]" scrolling="0" allowfullscreen="true" frameborder="0"
+                        referrerpolicy="no-referrer"></iframe>
                 </div>
 
                 <div class="mt-2 alert alert-danger alert-dismissible fade show" role="alert">
@@ -28,11 +29,10 @@
                     <div class="card-body">
                         <router-link :to="{
                             name: 'stream-tv-eps',
-                            params: {
+                                params: {
                                 slug: stream.slug,
-                            }
-                        }" class="btn btn-primary me-3" v-for="(stream, index) in other_links_movie"
-                            :key="index">
+                                                    }
+                        }" class="btn btn-primary me-3" v-for="(stream, index) in other_links_movie" :key="index">
                             Eps {{ index + 1 }}
                         </router-link>
                     </div>
@@ -55,6 +55,7 @@
 <script lang="ts">
 import axios from "axios";
 import { defineComponent } from "vue";
+import router from "../router";
 
 export default defineComponent({
     name: "DetailMovie",
@@ -72,24 +73,34 @@ export default defineComponent({
     },
     async mounted() {
         await axios.get(import.meta.env.VITE_API_URL + "/movies/detail/" + this.$route.params.slug, {
-                headers: {
-                    'Referer': 'https://ngefilm21.club/',
-                    'Referrer-Policy': 'no-referrer'
-                }
-            })
+            headers: {
+                'Referer': 'https://ngefilm21.club/',
+                'Referrer-Policy': 'no-referrer'
+            }
+        })
             .then(({ data }) => {
                 this.movie = data.data
             })
             .catch((error) => {
+                this.$swal({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message,
+                    confirmButtonText: 'Kembali',
+                }).then((result: any) => {
+                    if (result.isConfirmed) {
+                        router.push({ name: 'home' })
+                    }
+                })
                 console.log(error)
             })
 
         await axios.get(import.meta.env.VITE_API_URL + "/tv/" + this.$route.params.slug, {
-                headers: {
-                    'Referer': 'https://ngefilm21.club/',
-                    'Referrer-Policy': 'no-referrer'
-                }
-            })
+            headers: {
+                'Referer': 'https://ngefilm21.club/',
+                'Referrer-Policy': 'no-referrer'
+            }
+        })
             .then(({ data }) => {
                 this.other_links_movie = data.data.streaming_links
             })
