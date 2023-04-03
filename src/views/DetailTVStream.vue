@@ -56,6 +56,7 @@
 import axios from "axios";
 import { defineComponent } from "vue";
 import router from "../router";
+import Swal from "sweetalert2";
 
 export default defineComponent({
     name: "DetailMovie",
@@ -82,7 +83,7 @@ export default defineComponent({
                 this.movie = data.data
             })
             .catch((error) => {
-                this.$swal({
+                Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: error.response.data.message,

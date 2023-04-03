@@ -41,6 +41,7 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 import router from "../router";
+import Swal from "sweetalert2";
 
 export default defineComponent({
     name: "Search",
@@ -65,7 +66,7 @@ export default defineComponent({
                         this.isloading = false
                     })
                     .catch((error: any) => {
-                        this.$swal({
+                        Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: error.response.data.message,
